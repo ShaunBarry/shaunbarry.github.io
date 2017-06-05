@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-06-05T01:54:13-04:00</updated><id>http://localhost:4000/</id><title type="html">Shaun Barry</title><subtitle>&quot;Sometimes science is more art than science. A lot of people don't get that.&quot;
-</subtitle><entry><title type="html">Transferring Musical ‘Style’ Without Learning It</title><link href="http://localhost:4000/jekyll/update/2017/05/20/transferring-musical-style-without-learning-it.html" rel="alternate" type="text/html" title="Transferring Musical 'Style' Without Learning It" /><published>2017-05-20T01:22:52-04:00</published><updated>2017-05-20T01:22:52-04:00</updated><id>http://localhost:4000/jekyll/update/2017/05/20/transferring-musical-style-without-learning-it</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2017/05/20/transferring-musical-style-without-learning-it.html">&lt;p&gt;This blog post is a summary and demonstration of a paper submission to the 2017 IEEE Workshop on Applications of Signal Processing to Audio and Acoustics (&lt;a href=&quot;http://www.waspaa.com/&quot;&gt;WASPAA&lt;/a&gt;), &lt;a href=&quot;https://arXiv.org&quot;&gt;“Transferring Musical Style Without Learning It Using Random Convolutions”&lt;/a&gt;. We introduce improvements to the &lt;a href=&quot;https://dmitryulyanov.github.io/audio-texture-synthesis-and-style-transfer&quot;&gt;audio style transfer algorithm&lt;/a&gt; proposed by Dmitry Ulyanov and Vadim Levedev.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-06-05T09:12:44-04:00</updated><id>http://localhost:4000/</id><title type="html">Shaun Barry</title><subtitle>&quot;Sometimes science is more art than science. A lot of people don't get that.&quot;
+</subtitle><entry><title type="html">Transferring Musical ‘Style’ Without Learning It</title><link href="http://localhost:4000/jekyll/update/2017/05/20/transferring-musical-style-without-learning-it.html" rel="alternate" type="text/html" title="Transferring Musical 'Style' Without Learning It" /><published>2017-05-20T01:22:52-04:00</published><updated>2017-05-20T01:22:52-04:00</updated><id>http://localhost:4000/jekyll/update/2017/05/20/transferring-musical-style-without-learning-it</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2017/05/20/transferring-musical-style-without-learning-it.html">&lt;p&gt;This blog post is a summary and demonstration of a paper submission to the 2017 IEEE Workshop on Applications of Signal Processing to Audio and Acoustics (&lt;a href=&quot;http://www.waspaa.com/&quot;&gt;WASPAA&lt;/a&gt;), &lt;a href=&quot;https://arXiv.org&quot;&gt;“Transferring Musical Style Without Learning It Using Random Convolutions”&lt;/a&gt;. We introduce improvements to the &lt;a href=&quot;https://dmitryulyanov.github.io/audio-texture-synthesis-and-style-transfer&quot;&gt;audio style transfer algorithmm&lt;/a&gt; proposed by Dmitry Ulyanov and Vadim Levedev.
 All code used to generate the examples is written in TensorFlow and can be found &lt;a href=&quot;https://github.com/u/ShaunBarry/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;The Improvements we offer are:&lt;/p&gt;
@@ -14,19 +14,25 @@ All code used to generate the examples is written in TensorFlow and can be found
 
 &lt;p&gt;The problem we are attempting to solve is the transfer of musical style from one single example onto another using their raw audio representations, rather than symbolic representations like MIDI. To do so, we take the framework provided by Ulyanov and Lebedev and offer improvements for representing the long-term rhythmic structure of the audio.&lt;/p&gt;
 
-&lt;p&gt;The success of Ulyanov and Lebedev’s implementation over previous attempts is partly attributed to their use of the Short-Time-Fourier-Transform (STFT) which is convolved in time, &lt;strong&gt;but treat each frequency bin as a color channel&lt;/strong&gt;. Although we can plot the log-magnitude STFT of an audio signal as an image, there a lot of differences between how our eyes process images to how our ears process audio. For example, an object which is rotated in an image is still the same object, while rotating an audio signal along the time-frequency axes would drastically change how the signal is processed to your ear. Since with images we convolve kernels along the 2 spatial axes and not 1 color axis, it makes sense that we’d only want to convolve in time and not frequency for the STFT.&lt;/p&gt;
+&lt;p&gt;The success of Ulyanov and Lebedev’s implementation over previous attempts is partly attributed to their use of the Short-Time-Fourier-Transform (STFT) which is convolved in time, &lt;strong&gt;but they treat each frequency bin as a color channel&lt;/strong&gt;. Although we can plot the log-magnitude STFT of an audio signal as an image, there a lot of differences between how our eyes process images to how our ears process audio. For example, an object which is rotated in an image is still the same object, while rotating an audio signal along the time-frequency axes would drastically change how the signal is processed to your ear. Since with images we convolve kernels along the 2 spatial axes and not 1 color axis, it makes sense that we’d only want to convolve in time and not frequency for the STFT. As a result, this will let us find patterns in time which correspond to certain frequency bins. But there are no patterns in frequency, meaning that the style transfer algorithm is not pitch invariant. This can easily be addressed by simply pitch-shifting the songs to the same (or similar sounding) keys and shifting tempos.&lt;/p&gt;
 
 &lt;p&gt;Since their implementation uses randomly initialized weights, it makes sense to would use the STFT representation over time representation of an audio signal, since the random patterns in frequency will become easier to represent than a time-domain audio model such as Deepmind’s Wavenet &lt;a href=&quot;https://deepmind.com/blog/wavenet-generative-model-raw-audio/&quot;&gt;[2]&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;So you’re telling me we don’t even have to train neural networks at all to do musical style transfer??? What’s the catch?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Well, the catch is that we need to use many more filters than is practical to train in typical neural networks. Ulyanov and Lebedev used 4096 filters with their 1x11 convolutional kernel. Here we use the same for the harmonic network structure and either 4096 filters for 1 rhythmic layer described in detail below, or 2048 filters for more than 1 in a dilated-residual structure. Even though the weights are not optimized, we can use many random filters to represent general patterns in time which are useful for representing musical style.&lt;/p&gt;
 
 &lt;h1 id=&quot;representing-rhythmic-style&quot;&gt;&lt;strong&gt;Representing Rhythmic “Style”&lt;/strong&gt;&lt;/h1&gt;
 &lt;p&gt;We can think of musical audio as being defined by 3 separate components: harmony, rhythm, and timbre. The algorithm proposed by Ulyanov and Lebedev has already shown the ability to jointly represent and transfer harmonic and timbrel style, but fail to represent features about rhythmic components of the audio signal. It’s not difficult to see why this is the case. Given an STFT of an audio signal sampled at a rate of 22050 Hz with 1025 frequency bins and a hop length of 512, the 1x11 kernel will only have a 1/4 of a second. A full measure measure of a song with a tempo of 120 bpm in 4/4 will last 2 seconds, which means our kernel is better suited for representing rhythm if it’s at least 5-10x as long.&lt;/p&gt;
 &lt;body&gt;
 	&lt;center&gt; 1x11 Convolutional layer on STFT
-	&lt;img src=&quot;/inputs/convolution_gif.gif&quot; /&gt;
+	&lt;img src=&quot;/convolution_gif.gif&quot; /&gt;
 &lt;/center&gt;
 &lt;/body&gt;
 
-&lt;p&gt;One way to correct this problem would be to simply increase the size of the convolutional kernel, but this is difficult since the number of filters needed is also very large. Instead, we propose adding a second layer which is run in parallel, and uses the mel-spectrum of the original signal instead of the entire STFT. The reason for this is it will allow us to have separate loss terms for the transfer of harmonic and rhythmic style. The melspectrum itself can be modeled as a linear transformation which reduces the number of frequency bins. For the case where only 3 mel-frequency bins are used, we can think of each channel as the amount of energy in bass, mid, and treble. For the extreme case of only one mel-bin, the transformation is analogous to converting a color image to grayscale, since that transformation can also be modeled as a linear combination of the color channels.&lt;/p&gt;
+&lt;p&gt;One way to correct this problem would be to simply increase the size of the convolutional kernel, but this is difficult since the size of the convolutional kernels starts to become very large. Also, if we using too much of the time and frequency, we’ll actually end up with aliases of certain sections of the style audio instead of generalized stylistic information. Instead, we propose adding a second layer which is run in parallel, and uses the mel-spectrum of the original signal instead of the entire STFT. The reason for this is it will allow us to have separate loss terms for the transfer of harmonic and rhythmic style. The mel-spectrum itself can be modeled as a linear transformation which reduces the number of frequency bins. For the case where only 3 mel-frequency bins are used, we can think of each channel as the amount of energy in bass, mid, and treble. For the extreme case of only one mel-bin, the transformation is analogous to converting a color image to grayscale, since that transformation can also be modeled as a linear combination of the color channels.&lt;/p&gt;
+
+&lt;p&gt;So our harmonic/timbrel kernels are large along the frequency axis, but short in time, while our rhythmic kernels have reduced resolution in frequency and long-term structure in time. When we want to represent very long term structure, we show that we can use a standard 1D dilated, residual convolutional network to develop long-term statistics useful for generating textures.&lt;/p&gt;
 
 &lt;!--&lt;body&gt;
 	&lt;center&gt; 1x50 Convolutional layer on Mel-spectrum with 8 bins
@@ -34,13 +40,15 @@ All code used to generate the examples is written in TensorFlow and can be found
 &lt;/center&gt;
 &lt;/body&gt;	--&gt;
 
-&lt;p&gt;We also can use the mel-spectrum representation for the content as a way of making our style transfer algorithm invariant to key/tuning. If we reduce our 1025 frequency bins to 8 mel-bins, you can still get a clear enough representation of the signal to show what words are being sung or when rhythmic hits are happening in different frequency bands, but not enough information for the algorithm to care about which key the content audio is in.&lt;/p&gt;
+&lt;p&gt;Earlier we mentioned that we could easily just shift the pitch and tempo so that style transfer would work. We also can use the mel-spectrum representation for the content as a way of making our style transfer algorithm invariant to key/tuning. This is particularly helpful if songs are in the same key, but slightly different tunings. If we reduce our 1025 frequency bins to 8 mel-bins, you can still get a clear enough representation of the signal to show what words are being sung or when rhythmic hits are happening in different frequency bands, but not enough information for the algorithm to care about which key the content audio is in.&lt;/p&gt;
+
+&lt;p&gt;To see an example of using the rhythmic content instead of the harmonic content, jump to example #1 below in the Style Transfer Experiments Section.&lt;/p&gt;
 
 &lt;h1 id=&quot;using-different-lengths-of-audio&quot;&gt;&lt;strong&gt;Using Different Lengths of Audio&lt;/strong&gt;&lt;/h1&gt;
 &lt;p&gt;Since the loss function for style only depends on the number of filters used, and not the number of time bins, we can think of the L2 style loss as measuring the distance between the statistics of the target audio and the style audio. These statistics are represented by what is essentially the covariance matrix of the observations in the convolutional feature maps.&lt;/p&gt;
 
-&lt;h1 id=&quot;using-l-bfgs-b-in-place-of-griffin-lim-alogrithm&quot;&gt;&lt;strong&gt;Using L-BFGS-B In Place of Griffin-Lim Alogrithm&lt;/strong&gt;&lt;/h1&gt;
-&lt;p&gt;Since we’re already using the L-BFGS-B optimization algorithm, it seems redundant to use another iterative algorithm to restore the phase after our optimization is finished. We can skip the Griffin-lim algorithm altogether by modeling the log-magnitude STFT transformation as a separate “layer” in our neural network. We can model the real and imaginary parts of the STFT using separate convolutional layers. Below is the code used to acheive this:&lt;/p&gt;
+&lt;h1 id=&quot;using-l-bfgs-b-in-place-of-griffin-lim-algorithm&quot;&gt;&lt;strong&gt;Using L-BFGS-B In Place of Griffin-Lim Algorithm&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;Since we’re already using the L-BFGS-B optimization algorithm, it seems redundant to use another iterative algorithm to restore the phase after our optimization is finished. We can skip the Griffin-lim algorithm altogether by modeling the log-magnitude STFT transformation as a separate “layer” in our neural network. We can model the real and imaginary parts of the STFT using separate convolutional layers. Below is the code used to achieve this:&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_logmagnitude_STFT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x_time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n_dft&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hop_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
 
@@ -59,13 +67,14 @@ All code used to generate the examples is written in TensorFlow and can be found
 
     &lt;span class=&quot;c&quot;&gt;# convolve to get log-magnitude STFT&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;X_real&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conv2d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x_time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    			&lt;span class=&quot;nb&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dft_real_kernels&lt;/span&gt;
-    	         &lt;span class=&quot;n&quot;&gt;strides&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hop_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    	         &lt;span class=&quot;n&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;VALID&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	    &lt;span class=&quot;nb&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dft_real_kernels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+	    &lt;span class=&quot;n&quot;&gt;strides&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hop_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+	    &lt;span class=&quot;n&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;VALID&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
     &lt;span class=&quot;n&quot;&gt;X_imag&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conv2d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x_time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    			&lt;span class=&quot;nb&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dft_imag_kernels&lt;/span&gt;
-    	         &lt;span class=&quot;n&quot;&gt;strides&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hop_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-    	         &lt;span class=&quot;n&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;VALID&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    	&lt;span class=&quot;nb&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dft_imag_kernels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;strides&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hop_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;VALID&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
     &lt;span class=&quot;c&quot;&gt;# get log-magnitude STFT&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;X_mag&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X_Real&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X_imag&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -80,6 +89,7 @@ All code used to generate the examples is written in TensorFlow and can be found
 &lt;center&gt;
 
 &lt;table&gt;
+	&lt;!-- Smash Mouth 
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Audio&lt;/th&gt;
@@ -87,23 +97,53 @@ All code used to generate the examples is written in TensorFlow and can be found
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Source&lt;/th&gt;
 		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
-			&lt;!--&lt;audio controls id=&quot;freebird&quot; preload=&quot;auto&quot; &gt;
-			&lt;source src=&quot;/inputs/freebirdsolo.mp3&quot;&gt;
-			&lt;/audio&gt; --&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/L_jWHffIx5E?start=36&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Texture&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326087328&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;--&gt;
+	&lt;!-- Free Bird --&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 1&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Source&lt;/th&gt;
+		&lt;td&gt;
 			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/3GSbJkU9Lmw?start=0&amp;amp;&amp;amp;end=240&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
 		&lt;/td&gt;
 	&lt;/tr&gt;
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Texture&lt;/th&gt;
 		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
-			&lt;!--&lt;audio controls id=&quot;none&quot; preload=&quot;auto&quot; &gt;
-			&lt;source src=&quot;/keepers/3_freebird-styleharm+styleenergy-mel-512_kr-50_nresid-3_10000iters.wav&quot;&gt;
-
-			&lt;/audio&gt;--&gt;
 			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326087328&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
 		&lt;/td&gt;
 	&lt;/tr&gt;
+	&lt;!-- All I want for Christmas is You
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 2&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Source&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/yXQViqx6GMY&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Texture&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326087328&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;--&gt;
 &lt;/table&gt;
+
+
+
 &lt;/center&gt;
 
 &lt;h1 id=&quot;style-transfer-experiments&quot;&gt;&lt;strong&gt;Style Transfer Experiments&lt;/strong&gt;&lt;/h1&gt;
@@ -113,7 +153,7 @@ All code used to generate the examples is written in TensorFlow and can be found
 	&lt;!--     Jacob Collier --&gt;
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
-		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Audio&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 1&lt;/th&gt;
 	&lt;/tr&gt;
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Content&lt;/th&gt;
@@ -130,23 +170,25 @@ All code used to generate the examples is written in TensorFlow and can be found
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result&lt;/th&gt;
 		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
-			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/107269721&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326177892&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
 		&lt;/td&gt;
 	&lt;/tr&gt;	
+	&lt;!--
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result&lt;/th&gt;
 		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
-			&lt;audio controls=&quot;&quot; preload=&quot;auto&quot;&gt;
-			&lt;source src=&quot;https://www.dropbox.com/s/b0o1l018evjxil9/1_content.wav?dl=1&quot; /&gt;
+			&lt;audio controls id=&quot;&quot; preload=&quot;auto&quot; &gt;
+			&lt;source src=&quot;https://www.dropbox.com/s/b0o1l018evjxil9/1_content.wav?dl=1&quot;&gt;
 			&lt;/audio&gt;
 		&lt;/td&gt;
 	&lt;/tr&gt;	
+--&gt;
 
 
 	&lt;!--     Won't get fooled again --&gt;
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
-		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Audio&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 2&lt;/th&gt;
 	&lt;/tr&gt;
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Content&lt;/th&gt;
@@ -170,7 +212,7 @@ All code used to generate the examples is written in TensorFlow and can be found
 	&lt;!--     Ghostbusters --&gt;
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
-		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Audio&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 3&lt;/th&gt;
 	&lt;/tr&gt;
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Content&lt;/th&gt;
@@ -194,7 +236,7 @@ All code used to generate the examples is written in TensorFlow and can be found
 	&lt;!--     Queen --&gt;
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
-		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Audio&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 4&lt;/th&gt;
 	&lt;/tr&gt;
 	&lt;tr&gt;
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Content&lt;/th&gt;
@@ -212,6 +254,124 @@ All code used to generate the examples is written in TensorFlow and can be found
 		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result&lt;/th&gt;
 		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
 			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326091390&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;	
+
+	&lt;!--     Sweet Dreams --&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 5&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Content&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/eRhg7qPLeN8?start=15&amp;amp;&amp;amp;end=45&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Style&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/SDTZ7iX4vTQ?start=4&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+		&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326157068&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;	
+
+	&lt;!--     Africa --&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 6&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Content&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/_MBRFbHHNzg?start=0&amp;amp;&amp;amp;end=30&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Style&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/FTQbiNvZqaY?start=4&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326104554&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;	
+
+	&lt;!--     PsychoSocial --&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 7&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Content&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/LB5YkmjalDg?start=28&amp;amp;&amp;amp;end=48&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Style&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/5abamRO41fE?start=60&amp;amp;&amp;amp;end=90&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326147183&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;	
+	&lt;!--     Smells Like Teen Spirit
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 8&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Content&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/hTWKbfoikeg?start=30&amp;&amp;end=70&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Style&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/__OSyznVDOY?start=45&amp;&amp;end=95&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326091390&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;	 --&gt;
+	&lt;!--     Down Rodeo --&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 8&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Content&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/IKyVYdIkwOQ?start=25&amp;amp;&amp;amp;end=55&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Style&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/do6Ki6kMq_o&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326178722&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=false&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
 		&lt;/td&gt;
 	&lt;/tr&gt;	
 	&lt;!--
@@ -313,14 +473,80 @@ All code used to generate the examples is written in TensorFlow and can be found
 &lt;h1 id=&quot;naive-source-separation&quot;&gt;&lt;strong&gt;Naive Source Separation&lt;/strong&gt;&lt;/h1&gt;
 
 &lt;p&gt;Given that we’ve shown the capability to represent musical statistics well, one could imagine a very simple algorithm for performing source separation as follows:
-Given a signal, &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;, which can be decomposed into subsignals &lt;script type=&quot;math/tex&quot;&gt;X_i, i \in [1,...,N]&lt;/script&gt;
-find all components &lt;script type=&quot;math/tex&quot;&gt;{X_i}&lt;/script&gt; s.t.&lt;/p&gt;
+Given a signal, &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;, which can be decomposed into subsignals &lt;script type=&quot;math/tex&quot;&gt;x_i, i \in [1,...,N]&lt;/script&gt; and examples of each target decomposotion which have same musical statistical representation, &lt;script type=&quot;math/tex&quot;&gt;G_i&lt;/script&gt;,
+find all components &lt;script type=&quot;math/tex&quot;&gt;{x_i}&lt;/script&gt; s.t.&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;
-    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{i=1}^{N}{X_i} = X&lt;/script&gt;
+    &lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\sum_{i=1}^{N}{x_i} = x&lt;/script&gt;:&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{Reconstruction} = L2(\sum_{i=1}^{N}{x_i}, x)&lt;/script&gt;
   &lt;/li&gt;
-  &lt;li&gt;The statistics of each of the components are matched by the sound examples provided.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The statistics of each of the components are matched by the sound examples provided:&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;L_{Style} = \sum_{i=1}^{N}{L2(S_i, G_i)}&lt;/script&gt;
+  &lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;center&gt;
+
+&lt;table&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;&lt;/th&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Example 1&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Source&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/hLQl3WQQoQ0?start=20&amp;amp;&amp;amp;end=30&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Isolated Vocals (Target)&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/xTchyZ6gsMI?start=20&amp;amp;&amp;amp;end=30&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Isolated Vocals 2 (Target)&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/byqTGIkmgAQ?start=0&amp;amp;&amp;amp;end=60&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Isolated Piano (Target)&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/0dGd6tPqv54?start=20&amp;amp;&amp;amp;end=30&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result: Isolated Vocals (Using Actual Isolation)&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326113798&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=true&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;	
+
+	&lt;tr&gt;
+	&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result: Isolated Piano (Using Actual Isolation)&lt;/th&gt;
+	&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+		&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326109894&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=true&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+	&lt;/td&gt;
+	&lt;/tr&gt;	
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result: Isolated Vocals (Using Set Fire)&lt;/th&gt;
+		&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+			&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326130441&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=true&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;	
+
+	&lt;tr&gt;
+	&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Result: Isolated Piano (Using Set Fire)&lt;/th&gt;
+	&lt;td style=&quot;text-align: center; vertical-align: middle;&quot;&gt;
+		&lt;iframe width=&quot;100%&quot; height=&quot;166&quot; scrolling=&quot;no&quot; frameborder=&quot;no&quot; src=&quot;https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326139571&amp;amp;color=ff5500&amp;amp;auto_play=false&amp;amp;hide_related=true&amp;amp;show_comments=true&amp;amp;show_user=true&amp;amp;show_reposts=false&quot;&gt;&lt;/iframe&gt;
+	&lt;/td&gt;
+	&lt;/tr&gt;	
+&lt;/table&gt;
+&lt;/center&gt;
 
 &lt;!--&lt;script&gt;
   myAudio=document.getElementById('godonlyknows');
@@ -360,4 +586,4 @@ s.setAttribute('data-timestamp', +new Date());
 &lt;noscript&gt;Please enable JavaScript to view the &lt;a href=&quot;https://disqus.com/?ref_noscript&quot;&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;
 
 &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;
-&lt;/script&gt;</content><author><name>[&quot;Shaun Barry and Youngmoo Kim&quot;]</name></author><summary type="html">This blog post is a summary and demonstration of a paper submission to the 2017 IEEE Workshop on Applications of Signal Processing to Audio and Acoustics (WASPAA), “Transferring Musical Style Without Learning It Using Random Convolutions”. We introduce improvements to the audio style transfer algorithm proposed by Dmitry Ulyanov and Vadim Levedev. All code used to generate the examples is written in TensorFlow and can be found here.</summary></entry></feed>
+&lt;/script&gt;</content><author><name>[&quot;Shaun Barry and Youngmoo Kim&quot;]</name></author><summary type="html">This blog post is a summary and demonstration of a paper submission to the 2017 IEEE Workshop on Applications of Signal Processing to Audio and Acoustics (WASPAA), “Transferring Musical Style Without Learning It Using Random Convolutions”. We introduce improvements to the audio style transfer algorithmm proposed by Dmitry Ulyanov and Vadim Levedev. All code used to generate the examples is written in TensorFlow and can be found here.</summary></entry></feed>

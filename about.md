@@ -4,6 +4,6 @@ title: About
 permalink: /about/
 ---
 
-I'm a 3rd year undergraduate student at Drexel University currently studying Electrical Engineering in an accelerated B.S.M.S. program. I'm enrolled in their 5 year co-op program. 
+I'm a 3rd year undergraduate student at Drexel University currently studying Electrical Engineering in the accelerated B.S.M.S., 5-year, 3 co-op program.
 
-My research is focused on developing generative algorithms for music. I also work at Lockheed Martin Advanced Technology Laboratories where I've contributed to projects using Deep Learning in communications.
+My research interests include using machine learning and signal processing to generate interesting music, and using learning algortihms to help perform related tasks. I also work at Lockheed Martin Advanced Technology Laboratories (ATL) where I've contributed to projects using Deep Learning in cognitive electronic warfare. 
