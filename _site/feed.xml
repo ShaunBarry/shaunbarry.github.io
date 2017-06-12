@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-06-12T09:02:37-04:00</updated><id>http://localhost:4000/</id><title type="html">Shaun Barry</title><subtitle>&quot;Sometimes science is more art than science. A lot of people don't get that.&quot;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-06-12T09:27:37-04:00</updated><id>http://localhost:4000/</id><title type="html">Shaun Barry</title><subtitle>&quot;Sometimes science is more art than science. A lot of people don't get that.&quot;
 </subtitle><entry><title type="html">Transferring Musical ‘Style’ Without Learning It</title><link href="http://localhost:4000/jekyll/update/2017/05/20/transferring-musical-style-without-learning-it.html" rel="alternate" type="text/html" title="Transferring Musical 'Style' Without Learning It" /><published>2017-05-20T01:22:52-04:00</published><updated>2017-05-20T01:22:52-04:00</updated><id>http://localhost:4000/jekyll/update/2017/05/20/transferring-musical-style-without-learning-it</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2017/05/20/transferring-musical-style-without-learning-it.html">&lt;p&gt;This blog post is a summary and demonstration of a paper submission to the 2017 IEEE Workshop on Applications of Signal Processing to Audio and Acoustics (&lt;a href=&quot;http://www.waspaa.com/&quot;&gt;WASPAA&lt;/a&gt;), &lt;a href=&quot;https://arXiv.org&quot;&gt;“Transferring Musical Style Without Learning It Using Random Convolutions”&lt;/a&gt;. We introduce improvements to the &lt;a href=&quot;https://dmitryulyanov.github.io/audio-texture-synthesis-and-style-transfer&quot;&gt;audio style transfer algorithmm&lt;/a&gt; proposed by Dmitry Ulyanov and Vadim Levedev.
 All code used to generate the examples is written in TensorFlow and can be found &lt;a href=&quot;https://github.com/u/ShaunBarry/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
@@ -88,10 +88,98 @@ All code used to generate the examples is written in TensorFlow and can be found
 
 &lt;h1 id=&quot;listening-to-the-mel-reduced-content&quot;&gt;&lt;strong&gt;Listening to the Mel-reduced Content&lt;/strong&gt;&lt;/h1&gt;
 
-&lt;p&gt;Before understanding how the mel-based representation helps us represent rhythmic style, let’s listen to what the mel-reduced representations sound like at various stages of frequency bin reduction.&lt;/p&gt;
+&lt;p&gt;Before understanding how the mel-based representation helps us represent rhythmic style, let’s listen to what the mel-reduced representations sound like at various stages of frequency bin reduction. Here we are only optimizing the rhythmic content loss with a sampling rate of 22.05 kHz and N_FFT = 2048.&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;** insert examples here **&lt;/em&gt;&lt;/p&gt;
+&lt;center&gt;
+	
+&lt;table&gt;
+	&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Source&lt;/th&gt;
+		&lt;td&gt;
+			&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/pIgZ7gMze7A?start=114&amp;amp;&amp;amp;end=134&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+		&lt;/td&gt;
+	&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;N_mels&lt;/th&gt;
+	&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;Audio&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;512&lt;/th&gt;
+		&lt;td&gt;
+		&lt;audio controls=&quot;&quot;&gt;
+      &lt;source src=&quot;/contents/1_wakemeup-10-70_contentenergy-mel-512_kr-50_nresid-0_10000iters.wav&quot; /&gt;
+      &lt;/audio&gt;
+		&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;256&lt;/th&gt;
+		&lt;td&gt;
+		&lt;audio controls=&quot;&quot;&gt;
+      &lt;source src=&quot;/contents/1_wakemeup-10-70_contentenergy-mel-256_kr-50_nresid-0_10000iters.wav&quot; /&gt;
+      &lt;/audio&gt;
+		&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;128&lt;/th&gt;
+		&lt;td&gt;
+		&lt;audio controls=&quot;&quot;&gt;
+      &lt;source src=&quot;/contents/1_wakemeup-10-70_contentenergy-mel-128_kr-50_nresid-0_10000iters.wav&quot; /&gt;
+      &lt;/audio&gt;
+		&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;64&lt;/th&gt;
+		&lt;td&gt;
+		&lt;audio controls=&quot;&quot;&gt;
+      &lt;source src=&quot;/contents/1_wakemeup-10-70_contentenergy-mel-64_kr-50_nresid-0_10000iters.wav&quot; /&gt;
+      &lt;/audio&gt;
+		&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;32&lt;/th&gt;
+		&lt;td&gt;
+		&lt;audio controls=&quot;&quot;&gt;
+      &lt;source src=&quot;/contents/1_wakemeup-10-70_contentenergy-mel-32_kr-50_nresid-0_10000iters.wav&quot; /&gt;
+      &lt;/audio&gt;
+		&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;16&lt;/th&gt;
+		&lt;td&gt;
+		&lt;audio controls=&quot;&quot;&gt;
+      &lt;source src=&quot;/contents/1_wakemeup-10-70_contentenergy-mel-16_kr-50_nresid-0_10000iters.wav&quot; /&gt;
+      &lt;/audio&gt;
+		&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;8&lt;/th&gt;
+		&lt;td&gt;
+		&lt;audio controls=&quot;&quot;&gt;
+      &lt;source src=&quot;/contents/1_wakemeup-10-70_contentenergy-mel-8_kr-50_nresid-0_10000iters.wav&quot; /&gt;
+      &lt;/audio&gt;
+		&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;4&lt;/th&gt;
+		&lt;td&gt;
+		&lt;audio controls=&quot;&quot;&gt;
+      &lt;source src=&quot;/contents/1_wakemeup-10-70_contentenergy-mel-4_kr-50_nresid-0_10000iters.wav&quot; /&gt;
+      &lt;/audio&gt;
+		&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+		&lt;th style=&quot;text-align: center; vertical-align: middle;&quot;&gt;2&lt;/th&gt;
+		&lt;td&gt;
+		&lt;audio controls=&quot;&quot;&gt;
+      &lt;source src=&quot;/contents/1_wakemeup-10-70_contentenergy-mel-2_kr-50_nresid-0_10000iters.wav&quot; /&gt;
+      &lt;/audio&gt;
+		&lt;/td&gt;
+&lt;/tr&gt;
+	
 
+&lt;/table&gt;
+	
+&lt;/center&gt;
 &lt;h1 id=&quot;isolated-style-textures&quot;&gt;&lt;strong&gt;Isolated Style Textures&lt;/strong&gt;&lt;/h1&gt;
 
 &lt;p&gt;By only optimizing the style loss with no content loss, we can create audio textures like the ones shown in Ulyanov and Lebedev’s original blog post. However, since we can represent longer-term structure in the statistics well, the textures have rhythmic structure similar to the original audio. Below is a detailed example comparing different lengths of kernels and types of layers.&lt;/p&gt;

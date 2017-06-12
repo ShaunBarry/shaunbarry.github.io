@@ -96,10 +96,98 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 
 # **Listening to the Mel-reduced Content**
 
-Before understanding how the mel-based representation helps us represent rhythmic style, let's listen to what the mel-reduced representations sound like at various stages of frequency bin reduction.
+Before understanding how the mel-based representation helps us represent rhythmic style, let's listen to what the mel-reduced representations sound like at various stages of frequency bin reduction. Here we are only optimizing the rhythmic content loss with a sampling rate of 22.05 kHz and N_FFT = 2048.
 
-*** insert examples here ***
+<center>
+	
+<table>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Source</th>
+		<td>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/pIgZ7gMze7A?start=114&&end=134" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+<tr>
+	<th style="text-align: center; vertical-align: middle;">N_mels</th>
+	<th style="text-align: center; vertical-align: middle;">Audio</th>
+</tr>
+<tr>
+		<th style="text-align: center; vertical-align: middle;">512</th>
+		<td>
+		<audio controls>
+      <source src="/contents/1_wakemeup-10-70_contentenergy-mel-512_kr-50_nresid-0_10000iters.wav">
+      </audio>
+		</td>
+</tr>
+<tr>
+		<th style="text-align: center; vertical-align: middle;">256</th>
+		<td>
+		<audio controls>
+      <source src="/contents/1_wakemeup-10-70_contentenergy-mel-256_kr-50_nresid-0_10000iters.wav">
+      </audio>
+		</td>
+</tr>
+<tr>
+		<th style="text-align: center; vertical-align: middle;">128</th>
+		<td>
+		<audio controls>
+      <source src="/contents/1_wakemeup-10-70_contentenergy-mel-128_kr-50_nresid-0_10000iters.wav">
+      </audio>
+		</td>
+</tr>
+<tr>
+		<th style="text-align: center; vertical-align: middle;">64</th>
+		<td>
+		<audio controls>
+      <source src="/contents/1_wakemeup-10-70_contentenergy-mel-64_kr-50_nresid-0_10000iters.wav">
+      </audio>
+		</td>
+</tr>
+<tr>
+		<th style="text-align: center; vertical-align: middle;">32</th>
+		<td>
+		<audio controls>
+      <source src="/contents/1_wakemeup-10-70_contentenergy-mel-32_kr-50_nresid-0_10000iters.wav">
+      </audio>
+		</td>
+</tr>
+<tr>
+		<th style="text-align: center; vertical-align: middle;">16</th>
+		<td>
+		<audio controls>
+      <source src="/contents/1_wakemeup-10-70_contentenergy-mel-16_kr-50_nresid-0_10000iters.wav">
+      </audio>
+		</td>
+</tr>
+<tr>
+		<th style="text-align: center; vertical-align: middle;">8</th>
+		<td>
+		<audio controls>
+      <source src="/contents/1_wakemeup-10-70_contentenergy-mel-8_kr-50_nresid-0_10000iters.wav">
+      </audio>
+		</td>
+</tr>
+<tr>
+		<th style="text-align: center; vertical-align: middle;">4</th>
+		<td>
+		<audio controls>
+      <source src="/contents/1_wakemeup-10-70_contentenergy-mel-4_kr-50_nresid-0_10000iters.wav">
+      </audio>
+		</td>
+</tr>
+<tr>
+		<th style="text-align: center; vertical-align: middle;">2</th>
+		<td>
+		<audio controls>
+      <source src="/contents/1_wakemeup-10-70_contentenergy-mel-2_kr-50_nresid-0_10000iters.wav">
+      </audio>
+		</td>
+</tr>
+	
 
+</table>
+	
+</center>
 # **Isolated Style Textures**
 
 By only optimizing the style loss with no content loss, we can create audio textures like the ones shown in Ulyanov and Lebedev's original blog post. However, since we can represent longer-term structure in the statistics well, the textures have rhythmic structure similar to the original audio. Below is a detailed example comparing different lengths of kernels and types of layers. 
