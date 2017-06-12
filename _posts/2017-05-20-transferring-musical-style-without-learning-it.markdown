@@ -94,27 +94,20 @@ Since we use overlapping time windows (hop_length < n_dft), the gradient can be 
 
 This lets us optimize our target variable as the raw audio signal, rather than the log-magnitude STFT. Tests with reconstructing the audio based on the content loss alone show that this implementation not only gets better results in terms of phase error, but it also converges in less iterations and is faster in time, especially if a GPU is being used.
 
+# **Listening to the Mel-reduced Content**
+
+Before understanding how the mel-based representation helps us represent rhythmic style, let's listen to what the mel-reduced representations sound like at various stages of frequency bin reduction.
+
+*** insert examples here ***
+
 # **Isolated Style Textures**
+
+By only optimizing the style loss with no content loss, we can create audio textures like the ones shown in Ulyanov and Lebedev's original blog post. However, since we can represent longer-term structure in the statistics well, the textures have rhythmic structure similar to the original audio. Below is a detailed example comparing different lengths of kernels and types of layers. 
+
+When we use more than one layer, we use residual and strided convolutions to increase our representational span even more. This architecture is actually very similar to the structure of the encoding stage in Wavenet auto-encoders. We use 2048 filters per convolutional layer, and we use a larger initial filter length of 50, while the additional residual blocks use a length of 25. 
 <center>
 
 <table>
-	<!-- Smash Mouth 
-	<tr>
-		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Audio</th>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Source</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/L_jWHffIx5E?start=36" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Texture</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326087328&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>-->
 
 	<!-- Crazy -->
 	<tr>
@@ -137,18 +130,6 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic Loss Only, K_h = 10)</th>
 		<td style="text-align: center; vertical-align: middle;">
 			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327530560&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic+Rhythmic, 10 mels, 1 Layer)</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327627736&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic+Rhythmic, 10 mels, 4 Layers)</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327627783&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 		</td>
 	</tr>
 	<tr>
@@ -181,23 +162,6 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326087328&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 		</td>
 	</tr>
-	<!-- All I want for Christmas is You
-	<tr>
-		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Example 2</th>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Source</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/yXQViqx6GMY" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Texture</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326087328&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>-->
 </table>
 
 
@@ -205,6 +169,9 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 </center>
 
 # **Style Transfer Experiments**
+## **Examples Where Rhythmic Content Is Best**
+
+Here are 2 examples of where using the content representation from the rhythm network works much better than the representation from the harmonic network since the two songs are in different keys/tunings. 
 <center>
 
 <table>
@@ -234,7 +201,7 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 	<!--     IconABBA -->
 	<tr>
 		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Example 1</th>
+		<th style="text-align: center; vertical-align: middle;">Example 2</th>
 	</tr>
 	<tr>
 		<th style="text-align: center; vertical-align: middle;">Content</th>
@@ -264,12 +231,20 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 		</td>
 	</tr>	
 -->
+</table>
+	
+</center>
 
+## **Examples Where Harmonic Content Is Best**
 
+When harmonic content is used, and there are a large amount of mel bins used (in this case 512), the result seems to resemble a mash-up of the two songs. 
+<center>
+
+<table>
 	<!--     Won't get fooled again -->
 	<tr>
 		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Example 2</th>
+		<th style="text-align: center; vertical-align: middle;">Example 1</th>
 	</tr>
 	<tr>
 		<th style="text-align: center; vertical-align: middle;">Content</th>
@@ -290,6 +265,166 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 		</td>
 	</tr>	
 
+	<!--     Africa -->
+	<tr>
+		<th style="text-align: center; vertical-align: middle;"></th>
+		<th style="text-align: center; vertical-align: middle;">Example 2</th>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Content</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/_MBRFbHHNzg?start=0&&end=30" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Style</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/FTQbiNvZqaY?start=4" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326104554&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>	
+
+	<!--     PsychoSocial -->
+	<tr>
+		<th style="text-align: center; vertical-align: middle;"></th>
+		<th style="text-align: center; vertical-align: middle;">Example 3</th>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Content</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/LB5YkmjalDg?start=28&&end=48" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Style</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/5abamRO41fE?start=60&&end=90" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326147183&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>	
+	<!--     Down Rodeo -->
+	<tr>
+		<th style="text-align: center; vertical-align: middle;"></th>
+		<th style="text-align: center; vertical-align: middle;">Example 4</th>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Content</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/IKyVYdIkwOQ?start=25&&end=55" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Style</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/do6Ki6kMq_o" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327628752&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>	
+	<!--     Beverly hills -->
+	<tr>
+		<th style="text-align: center; vertical-align: middle;"></th>
+		<th style="text-align: center; vertical-align: middle;">Example 5</th>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Content</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/HL_WvOly7mY?start=71&&end=91" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Style</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/aA5kIN2mr-o?start=113" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327629912&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>	
+</table>
+</center>
+
+## **Examples Where Either Content Representation Works Well**
+For some examples, using either type of content works well. 
+<center>
+
+<table>
+
+	<!--     Sweet Dreams -->
+	<tr>
+		<th style="text-align: center; vertical-align: middle;"></th>
+		<th style="text-align: center; vertical-align: middle;">Example 1</th>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Content</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/eRhg7qPLeN8?start=15&&end=45" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Style</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/SDTZ7iX4vTQ?start=4" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result</th>
+		<td style="text-align: center; vertical-align: middle;">
+		<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326157068&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result (Rhythm Content)</th>
+		<td style="text-align: center; vertical-align: middle;">
+		<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327650762&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>	
+	<!--     Queen -->
+	<tr>
+		<th style="text-align: center; vertical-align: middle;"></th>
+		<th style="text-align: center; vertical-align: middle;">Example 2</th>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Content</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/fJ9rUzIMcZQ?start=220&&end=290" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Style</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/WSeNSzJ2-Jw?start=0&&end=116" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326091390&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>	
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result (Content Rhythm Version)</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327530219&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>
 	<!--     Ghostbusters -->
 	<tr>
 		<th style="text-align: center; vertical-align: middle;"></th>
@@ -319,246 +454,6 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327628993&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 		</td>
 	</tr>	
-
-	<!--     Queen -->
-	<tr>
-		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Example 4</th>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Content</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/fJ9rUzIMcZQ?start=220&&end=290" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Style</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/WSeNSzJ2-Jw?start=0&&end=116" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Result</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326091390&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>	
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Result (Content Rhythm Version)</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327530219&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>
-	<!--     Sweet Dreams -->
-	<tr>
-		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Example 5</th>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Content</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/eRhg7qPLeN8?start=15&&end=45" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Style</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/SDTZ7iX4vTQ?start=4" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Result</th>
-		<td style="text-align: center; vertical-align: middle;">
-		<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326157068&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>	
-
-	<!--     Africa -->
-	<tr>
-		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Example 6</th>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Content</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/_MBRFbHHNzg?start=0&&end=30" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Style</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/FTQbiNvZqaY?start=4" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Result</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326104554&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>	
-
-	<!--     PsychoSocial -->
-	<tr>
-		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Example 7</th>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Content</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/LB5YkmjalDg?start=28&&end=48" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Style</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/5abamRO41fE?start=60&&end=90" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Result</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326147183&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>	
-	<!--     Smells Like Teen Spirit
-	<tr>
-		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Example 8</th>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Content</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/hTWKbfoikeg?start=30&&end=70" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Style</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/__OSyznVDOY?start=45&&end=95" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Result</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326091390&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>	 -->
-	<!--     Down Rodeo -->
-	<tr>
-		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Example 8</th>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Content</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/IKyVYdIkwOQ?start=25&&end=55" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Style</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/do6Ki6kMq_o" frameborder="0" allowfullscreen></iframe>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Result</th>
-		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327628752&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
-		</td>
-	</tr>	
-	<!--
-	<tr>
-		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Title</th>
-		<th style="text-align: center; vertical-align: middle;">Artist</th>
-		<th style="text-align: center; vertical-align: middle;">Times</th>
-		<th style="text-align: center; vertical-align: middle;">Audio</th>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Content</th>
-		<td style="text-align: center; vertical-align: middle;">"In Da Club"</td>
-		<td style="text-align: center; vertical-align: middle;">50 Cent</td>
-		<td style="text-align: center; vertical-align: middle;">0:00-0:30</td>
-		<td style="text-align: center; vertical-align: middle;">
-			<audio controls id="indaclub" preload="auto" >
-			<source src="/inputs/indaclub.mp3">
-			</audio>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Style</th>
-		<td style="text-align: center; vertical-align: middle;">"Africa"</td>
-		<td style="text-align: center; vertical-align: middle;">Toto</td>
-		<td style="text-align: center; vertical-align: middle;">0:04-1:35</td>
-		<td style="text-align: center; vertical-align: middle;">
-			<audio controls id="africa" preload="auto" >
-			<source src="/inputs/africa.mp3">
-			</audio>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Result</th>
-		<td style="text-align: center; vertical-align: middle;">1 Rhythm Layer</td>
-		<td style="text-align: center; vertical-align: middle;">-</td>
-		<td style="text-align: center; vertical-align: middle;">-</td>
-		<td style="text-align: center; vertical-align: middle;">
-			<audio controls>
-			<source src="/keepers/6_indaclub-0-30_contentharm_africa-4-95_styleharm+styleenergy_mel-4_kr-50_nresid-0_10000iters-n_hop-512-4096filters-factr-0W100.0.wav">
-			</audio>
-		</td>
-	</tr>	
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Result</th>
-		<td style="text-align: center; vertical-align: middle;">4 Rhythm Layers</td>
-		<td style="text-align: center; vertical-align: middle;">-</td>
-		<td style="text-align: center; vertical-align: middle;">-</td>
-		<td style="text-align: center; vertical-align: middle;">
-			<audio controls>
-			<source src="/keepers/6_indaclub-0-30_contentharm_africa-4-95_styleharm+styleenergy_mel-512_kr-50_nresid-3_10000iters-n_hop-512-1024filters-factr-0W100.0.wav">
-			</audio>
-		</td>
-	</tr>	
-	<tr>
-		<th style="text-align: center; vertical-align: middle;"></th>
-		<th style="text-align: center; vertical-align: middle;">Title</th>
-		<th style="text-align: center; vertical-align: middle;">Artist</th>
-		<th style="text-align: center; vertical-align: middle;">Times</th>
-		<th style="text-align: center; vertical-align: middle;">Audio</th>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Content</th>
-		<td style="text-align: center; vertical-align: middle;">"Sweet Dreams"</td>
-		<td style="text-align: center; vertical-align: middle;">Eurythmics</td>
-		<td style="text-align: center; vertical-align: middle;">0:15-0:75</td>
-		<td style="text-align: center; vertical-align: middle;">
-			<audio controls id="sweetdreams" preload="auto" >
-			<source src="/inputs/sweetdreams.mp3">
-			</audio>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Style</th>
-		<td style="text-align: center; vertical-align: middle;">"Pumped Up Kicks"</td>
-		<td style="text-align: center; vertical-align: middle;">Foster The People</td>
-		<td style="text-align: center; vertical-align: middle;">0:04-4:00</td>
-		<td style="text-align: center; vertical-align: middle;">
-			<audio controls id="pumpedupkicks" preload="auto">
-			<source src="/inputs/pumpedupkicks.mp3">
-			</audio>
-		</td>
-	</tr>
-	<tr>
-		<th style="text-align: center; vertical-align: middle;">Result</th>
-		<td style="text-align: center; vertical-align: middle;">-</td>
-		<td style="text-align: center; vertical-align: middle;">-</td>
-		<td style="text-align: center; vertical-align: middle;">-</td>
-		<td style="text-align: center; vertical-align: middle;">
-			<audio controls id="pumpedresult" preload="auto">
-			<source src="/keepers/12_sweetdreams-15-75_contentharm_pumpedupkicks-4-240-both-mel-512_kr-50_nresid-0_15000iters-4096filters_kh-5_W200.0.wav">
-			</audio>
-		</td>
-	</tr>
--->
 </table>
 </center>
 
@@ -633,21 +528,6 @@ find all components $${x_i}$$ s.t.
 	</tr>	
 </table>
 </center>
-
-<!--<script>
-  myAudio=document.getElementById('godonlyknows');
-  myAudio.currentTime = 15;
-  myAudio=document.getElementById('isntshelovely');
-  myAudio.currentTime = 7;
-  myAudio=document.getElementById('africa');
-  myAudio.currentTime = 4;
-  myAudio=document.getElementById('sweetdreams');
-  myAudio.currentTime = 15;
-  myAudio=document.getElementById('pumpedupkicks');
-  myAudio.currentTime = 4;
-  myAudio=document.getElementById('pumpedresult');
-  myAudio.currentTime = 0;
-</script>-->
 
 <div id="disqus_thread"></div>
 <script>
