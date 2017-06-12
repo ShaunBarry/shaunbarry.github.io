@@ -30,13 +30,13 @@ Well, the catch is that we need to use many more filters than is practical to tr
 
 # **Representing Rhythmic "Style"**
 We can think of musical audio as being defined by 3 separate components: harmony, rhythm, and timbre. The algorithm proposed by Ulyanov and Lebedev has already shown the ability to jointly represent and transfer harmonic and timbrel style, but fail to represent features about rhythmic components of the audio signal. It's not difficult to see why this is the case. Given an STFT of an audio signal sampled at a rate of 22050 Hz with 1025 frequency bins and a hop length of 512, the 1x11 kernel will only have a 1/4 of a second. A full measure measure of a song with a tempo of 120 bpm in 4/4 will last 2 seconds, which means our kernel is better suited for representing rhythm if it's at least 5-10x as long. 
-<!--
+
 <body>
 	<center> 1x11 Convolutional layer on STFT
 	<img src="/convolution_gif.gif">
 </center>
 </body>	
--->
+
 One way to correct this problem would be to simply increase the size of the convolutional kernel, but this is difficult since the size of the convolutional kernels starts to become very large. Also, if we using too much of the time and frequency, we'll actually end up with aliases of certain sections of the style audio instead of generalized stylistic information. Instead, we propose adding a second layer which is run in parallel, and uses the mel-spectrum of the original signal instead of the entire STFT. The reason for this is it will allow us to have separate loss terms for the transfer of harmonic and rhythmic style. The mel-spectrum itself can be modeled as a linear transformation which reduces the number of frequency bins. For the case where only 3 mel-frequency bins are used, we can think of each channel as the amount of energy in bass, mid, and treble. For the extreme case of only one mel-bin, the transformation is analogous to converting a color image to grayscale, since that transformation can also be modeled as a linear combination of the color channels. 
 
 So our harmonic/timbrel kernels are large along the frequency axis, but short in time, while our rhythmic kernels have reduced resolution in frequency and long-term structure in time. When we want to represent very long term structure, we show that we can use a standard 1D dilated, residual convolutional network to develop long-term statistics useful for generating textures.
@@ -115,10 +115,59 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326087328&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 		</td>
 	</tr>-->
-	<!-- Free Bird -->
+
+	<!-- Crazy -->
 	<tr>
 		<th style="text-align: center; vertical-align: middle;"></th>
 		<th style="text-align: center; vertical-align: middle;">Example 1</th>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Source</th>
+		<td>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/Qe500eIK1oA" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic Loss Only, K_h = 5)</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327530413&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic Loss Only, K_h = 10)</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327530560&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic+Rhythmic, 10 mels, 1 Layer)</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327627736&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic+Rhythmic, 10 mels, 4 Layers)</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327627783&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic+Rhythmic, 512 mels, 1 Layer)</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327627912&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic+Rhythmic, 512 mels, 4 Layers)</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327627948&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>
+
+	<!-- Free Bird -->
+	<tr>
+		<th style="text-align: center; vertical-align: middle;"></th>
+		<th style="text-align: center; vertical-align: middle;">Example 2</th>
 	</tr>
 	<tr>
 		<th style="text-align: center; vertical-align: middle;">Source</th>
@@ -179,7 +228,30 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 	<tr>
 		<th style="text-align: center; vertical-align: middle;">Result</th>
 		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326177892&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327630860&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>	
+	<!--     IconABBA -->
+	<tr>
+		<th style="text-align: center; vertical-align: middle;"></th>
+		<th style="text-align: center; vertical-align: middle;">Example 1</th>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Content</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/cvChjHcABPA?start=38&&end=68" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Style</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/UxxajLWwzqY?start=35&&end=95" frameborder="0" allowfullscreen></iframe>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327628339&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 		</td>
 	</tr>	
 	<!--
@@ -241,6 +313,12 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326090736&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 		</td>
 	</tr>	
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result (Content Rhythm Version)</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327628993&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>	
 
 	<!--     Queen -->
 	<tr>
@@ -265,7 +343,12 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326091390&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 		</td>
 	</tr>	
-
+	<tr>
+		<th style="text-align: center; vertical-align: middle;">Result (Content Rhythm Version)</th>
+		<td style="text-align: center; vertical-align: middle;">
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327530219&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+		</td>
+	</tr>
 	<!--     Sweet Dreams -->
 	<tr>
 		<th style="text-align: center; vertical-align: middle;"></th>
@@ -380,7 +463,7 @@ This lets us optimize our target variable as the raw audio signal, rather than t
 	<tr>
 		<th style="text-align: center; vertical-align: middle;">Result</th>
 		<td style="text-align: center; vertical-align: middle;">
-			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/326178722&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
+			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327628752&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 		</td>
 	</tr>	
 	<!--
@@ -586,6 +669,8 @@ s.setAttribute('data-timestamp', +new Date());
 })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<script src="mathjax-config.js"></script>
 
 <script type="text/javascript"
     src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
