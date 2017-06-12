@@ -104,7 +104,7 @@ Before understanding how the mel-based representation helps us represent rhythmi
 
 By only optimizing the style loss with no content loss, we can create audio textures like the ones shown in Ulyanov and Lebedev's original blog post. However, since we can represent longer-term structure in the statistics well, the textures have rhythmic structure similar to the original audio. Below is a detailed example comparing different lengths of kernels and types of layers. 
 
-When we use more than one layer, we use residual and strided convolutions to increase our representational span even more. This architecture is actually very similar to the structure of the encoding stage in Wavenet auto-encoders. We use 2048 filters per convolutional layer, and we use a larger initial filter length of 50, while the additional residual blocks use a length of 25. 
+When we use more than one layer, we use residual and strided convolutions to increase our representational span even more. This architecture is actually very similar to the structure of the encoding stage in Wavenet auto-encoders. We use 2048 filters per convolutional layer, and we use a larger initial filter length of 50, while the additional residual blocks use a length of 25. When we use a sampling rate of 44.1 kHz (as most examples do), we only represent the reduced mel-binned STFT for frequencies below 11.025 kHz, since most frequencies above this will be correlated with the other frequencies below this threshold, and the harmonic style loss will be able to pick up this detail. Another way to think of the mel-spectrum representation is as a form of "rhythmic attention". 
 <center>
 
 <table>
@@ -139,7 +139,7 @@ When we use more than one layer, we use residual and strided convolutions to inc
 		</td>
 	</tr>
 	<tr>
-		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic+Rhythmic, 512 mels, 4 Layers)</th>
+		<th style="text-align: center; vertical-align: middle;">Texture (Harmonic+Rhythmic, 512 mels, 4 Residual Blocks)</th>
 		<td style="text-align: center; vertical-align: middle;">
 			<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/327627948&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe>
 		</td>
