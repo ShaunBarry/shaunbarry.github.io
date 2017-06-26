@@ -13,7 +13,7 @@ The Improvements we offer are:
 1. Better representations and transfer of elements of rhythmic style.
 2. The ability to use different lengths of audio for source content and target style.
 3. Ability to optimize audio directly to a time domain representation (as opposed to the magnitude-frequency domain), so that the Griffin-Lim algorithm [[1]][griffin-lim] is not needed for phase reconstruction.
-4. A naive (no prior training for source audio) method for source separation using this framework.
+<!--4. A naive (no prior training for source audio) method for source separation using this framework.-->
 
 # **Background**
 
@@ -265,6 +265,7 @@ Here are 2 examples of where using the content representation from the rhythm ne
 <center>
 
 <table>
+
 	<!--     Jacob Collier -->
 	<tr>
 		<th style="text-align: center; vertical-align: middle;"></th>
@@ -637,14 +638,16 @@ s.src = 'https://shaunbarry-github-io.disqus.com/embed.js';
 s.setAttribute('data-timestamp', +new Date());
 (d.head || d.body).appendChild(s);
 })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!--
 <script src="mathjax-config.js"></script>
 
 <script type="text/javascript"
     src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+</script> -->
 
 
 [paper-link]: https://arXiv.org
