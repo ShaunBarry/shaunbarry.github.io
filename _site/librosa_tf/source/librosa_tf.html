@@ -1,0 +1,243 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>librosa_tf package &#8212; librosa_tf 0.1dev documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">librosa_tf 0.1dev documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="librosa-tf-package">
+<h1>librosa_tf package<a class="headerlink" href="#librosa-tf-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-librosa_tf.constantq">
+<span id="librosa-tf-constantq-module"></span><h2>librosa_tf.constantq module<a class="headerlink" href="#module-librosa_tf.constantq" title="Permalink to this headline">¶</a></h2>
+<p>Constant-Q transforms</p>
+<dl class="function">
+<dt id="librosa_tf.constantq.cqt">
+<code class="descclassname">librosa_tf.constantq.</code><code class="descname">cqt</code><span class="sig-paren">(</span><em>y</em>, <em>sr=22050</em>, <em>hop_length=512</em>, <em>fmin=None</em>, <em>n_bins=84</em>, <em>bins_per_octave=12</em>, <em>filter_scale=1</em>, <em>norm=1</em>, <em>scale=True</em>, <em>debug=False</em><span class="sig-paren">)</span><a class="headerlink" href="#librosa_tf.constantq.cqt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="librosa_tf.constantq.hcqt">
+<code class="descclassname">librosa_tf.constantq.</code><code class="descname">hcqt</code><span class="sig-paren">(</span><em>y, sr=22050, hop_length=512, fmin=None, n_bins=84, bins_per_octave=12, harmonics=[0.5, 1.0, 2.0, 3.0, 4.0, 5.0], filter_scale=1, scale=True, debug=False</em><span class="sig-paren">)</span><a class="headerlink" href="#librosa_tf.constantq.hcqt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="librosa-tf-harmonic-module">
+<h2>librosa_tf.harmonic module<a class="headerlink" href="#librosa-tf-harmonic-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-librosa_tf.resample">
+<span id="librosa-tf-resample-module"></span><h2>librosa_tf.resample module<a class="headerlink" href="#module-librosa_tf.resample" title="Permalink to this headline">¶</a></h2>
+<p>Audio resampling</p>
+<dl class="function">
+<dt id="librosa_tf.resample.audio_resample_tf">
+<code class="descclassname">librosa_tf.resample.</code><code class="descname">audio_resample_tf</code><span class="sig-paren">(</span><em>y</em>, <em>orig_sr</em>, <em>target_sr</em>, <em>res_type='kaiser_best'</em>, <em>fix=True</em>, <em>scale=False</em>, <em>use_bicubic=False</em><span class="sig-paren">)</span><a class="headerlink" href="#librosa_tf.resample.audio_resample_tf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="librosa_tf.resample.bicubic_interp_2d">
+<code class="descclassname">librosa_tf.resample.</code><code class="descname">bicubic_interp_2d</code><span class="sig-paren">(</span><em>input_</em>, <em>new_size</em>, <em>endpoint=False</em><span class="sig-paren">)</span><a class="headerlink" href="#librosa_tf.resample.bicubic_interp_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Args :
+<a href="#id1"><span class="problematic" id="id2">input_</span></a> : Input tensor. Its shape should be</p>
+<blockquote>
+<div>[batch_size, height, width, channel].
+In this implementation, the shape should be fixed for speed.</div></blockquote>
+<p>new_size : The output size [new_height, new_width]
+ref : 
+<a class="reference external" href="http://blog.demofox.org/2015/08/15/resizing-images-with-bicubic-interpolation/">http://blog.demofox.org/2015/08/15/resizing-images-with-bicubic-interpolation/</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="librosa_tf.resample.linear_interpolate1d_tf">
+<code class="descclassname">librosa_tf.resample.</code><code class="descname">linear_interpolate1d_tf</code><span class="sig-paren">(</span><em>x_np</em>, <em>x_new_np</em>, <em>y_tf</em><span class="sig-paren">)</span><a class="headerlink" href="#librosa_tf.resample.linear_interpolate1d_tf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-librosa_tf.spectrum">
+<span id="librosa-tf-spectrum-module"></span><h2>librosa_tf.spectrum module<a class="headerlink" href="#module-librosa_tf.spectrum" title="Permalink to this headline">¶</a></h2>
+<p>Spectrum functions</p>
+<dl class="function">
+<dt id="librosa_tf.spectrum.fmt">
+<code class="descclassname">librosa_tf.spectrum.</code><code class="descname">fmt</code><span class="sig-paren">(</span><em>y</em>, <em>t_min=0.5</em>, <em>n_fmt=None</em>, <em>kind='cubic'</em>, <em>beta=0.5</em>, <em>over_sample=1</em>, <em>axis=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#librosa_tf.spectrum.fmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="librosa_tf.spectrum.melspectrogram">
+<code class="descclassname">librosa_tf.spectrum.</code><code class="descname">melspectrogram</code><span class="sig-paren">(</span><em>y=None</em>, <em>sr=22050</em>, <em>S=None</em>, <em>n_fft=2048</em>, <em>hop_length=512</em>, <em>power=2.0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#librosa_tf.spectrum.melspectrogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a mel-scaled spectrogram.
+If a spectrogram input <cite>S</cite> is provided, then it is mapped directly onto
+the mel basis <cite>mel_f</cite> by <cite>mel_f.dot(S)</cite>.
+If a time-series input <cite>y, sr</cite> is provided, then its magnitude spectrogram
+<cite>S</cite> is first computed, and then mapped onto the mel scale by
+<cite>mel_f.dot(S**power)</cite>.  By default, <cite>power=2</cite> operates on a power spectrum.
+Parameters
+———-
+y : np.ndarray [shape=(n,)] or None</p>
+<blockquote>
+<div>audio time-series</div></blockquote>
+<dl class="docutils">
+<dt>sr <span class="classifier-delimiter">:</span> <span class="classifier">number &gt; 0 [scalar]</span></dt>
+<dd>sampling rate of <cite>y</cite></dd>
+<dt>S <span class="classifier-delimiter">:</span> <span class="classifier">np.ndarray [shape=(d, t)]</span></dt>
+<dd>spectrogram</dd>
+<dt>n_fft <span class="classifier-delimiter">:</span> <span class="classifier">int &gt; 0 [scalar]</span></dt>
+<dd>length of the FFT window</dd>
+<dt>hop_length <span class="classifier-delimiter">:</span> <span class="classifier">int &gt; 0 [scalar]</span></dt>
+<dd>number of samples between successive frames.
+See <cite>librosa.core.stft</cite></dd>
+<dt>power <span class="classifier-delimiter">:</span> <span class="classifier">float &gt; 0 [scalar]</span></dt>
+<dd>Exponent for the magnitude melspectrogram.
+e.g., 1 for energy, 2 for power, etc.</dd>
+<dt>kwargs <span class="classifier-delimiter">:</span> <span class="classifier">additional keyword arguments</span></dt>
+<dd>Mel filter bank parameters.
+See <cite>librosa.filters.mel</cite> for details.</dd>
+</dl>
+<dl class="docutils">
+<dt>S <span class="classifier-delimiter">:</span> <span class="classifier">np.ndarray [shape=(n_mels, t)]</span></dt>
+<dd>Mel spectrogram</dd>
+</dl>
+<dl class="docutils">
+<dt>librosa.filters.mel</dt>
+<dd>Mel filter bank construction</dd>
+<dt>librosa.core.stft</dt>
+<dd>Short-time Fourier Transform</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="librosa_tf.spectrum.stft">
+<code class="descclassname">librosa_tf.spectrum.</code><code class="descname">stft</code><span class="sig-paren">(</span><em>y</em>, <em>n_fft=2048</em>, <em>hop_length=None</em>, <em>win_length=None</em>, <em>window=&lt;function hann_window&gt;</em>, <em>pad_mode='reflect'</em><span class="sig-paren">)</span><a class="headerlink" href="#librosa_tf.spectrum.stft" title="Permalink to this definition">¶</a></dt>
+<dd><p>Short-time Fourier transform (STFT)
+Returns a complex-valued matrix D such that</p>
+<blockquote>
+<div><cite>np.abs(D[f, t])</cite> is the magnitude of frequency bin <cite>f</cite>
+at frame <cite>t</cite>
+<cite>np.angle(D[f, t])</cite> is the phase of frequency bin <cite>f</cite>
+at frame <cite>t</cite></div></blockquote>
+<dl class="docutils">
+<dt>y <span class="classifier-delimiter">:</span> <span class="classifier">Tensor object of [shape=(batch_size, n_samples)], dtype=tf.float32 OR np.ndarray [shape=(n,)], real-valued</span></dt>
+<dd>the input signal (audio time series)</dd>
+<dt>n_fft <span class="classifier-delimiter">:</span> <span class="classifier">int &gt; 0 [scalar]</span></dt>
+<dd>FFT window size</dd>
+<dt>hop_length <span class="classifier-delimiter">:</span> <span class="classifier">int &gt; 0 [scalar]</span></dt>
+<dd>number audio of frames between STFT columns.
+If unspecified, defaults <cite>win_length / 4</cite>.</dd>
+<dt>win_length <span class="classifier-delimiter">:</span> <span class="classifier">int &lt;= n_fft [scalar]</span></dt>
+<dd>Each frame of audio is windowed by <cite>window()</cite>.
+The window will be of length <cite>win_length</cite> and then padded
+with zeros to match <cite>n_fft</cite>.
+If unspecified, defaults to <code class="docutils literal notranslate"><span class="pre">win_length</span> <span class="pre">=</span> <span class="pre">n_fft</span></code>.</dd>
+</dl>
+<p>window : tensorflow window function</p>
+<dl class="docutils">
+<dt>pad_mode <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd>If <cite>center=True</cite>, the padding mode to use at the edges of the signal.
+By default, STFT uses reflection padding.</dd>
+</dl>
+<dl class="docutils">
+<dt>D <span class="classifier-delimiter">:</span> <span class="classifier">tensorflow.python.framework.ops.Tensor [shape=(1 + n_fft/2, t), dtype=dtype]</span></dt>
+<dd>STFT matrix</dd>
+</dl>
+<ol class="arabic simple">
+<li>Make window parameter compatible with strings</li>
+<li>Make different datatypes possible</li>
+<li>Make padding parameter more flexible</li>
+</ol>
+</dd></dl>
+
+</div>
+<div class="section" id="module-librosa_tf">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-librosa_tf" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">librosa_tf package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-librosa_tf.constantq">librosa_tf.constantq module</a></li>
+<li><a class="reference internal" href="#librosa-tf-harmonic-module">librosa_tf.harmonic module</a></li>
+<li><a class="reference internal" href="#module-librosa_tf.resample">librosa_tf.resample module</a></li>
+<li><a class="reference internal" href="#module-librosa_tf.spectrum">librosa_tf.spectrum module</a></li>
+<li><a class="reference internal" href="#module-librosa_tf">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/librosa_tf.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">librosa_tf 0.1dev documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Shaun Barry.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>
